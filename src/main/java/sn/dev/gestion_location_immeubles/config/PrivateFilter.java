@@ -28,6 +28,7 @@ public class PrivateFilter implements Filter {
         if (username != null
                 || chemin.equals("/")
                 || chemin.equals("/login")
+                || chemin.equals("/signup")
                 || chemin.equals("/logout")
                 || chemin.equals("/index.jsp") && method.equalsIgnoreCase("POST")
                 || chemin.startsWith("/public")) {
