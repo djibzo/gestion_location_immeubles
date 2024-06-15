@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Connexion</title>
+    <title>Inscription</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="./public/fonts/material-icon/css/material-design-iconic-font.min.css">

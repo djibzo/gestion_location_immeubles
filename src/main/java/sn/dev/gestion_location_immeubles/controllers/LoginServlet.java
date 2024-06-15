@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@WebServlet(name = "login",value = "/login")
+@WebServlet(name = "login",urlPatterns = {"/login","/"})
 public class LoginServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
+        req.getRequestDispatcher("connexion.jsp").forward(req, resp);
     }
 
     @Override
