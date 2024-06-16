@@ -45,7 +45,7 @@ public class SignUpServlet extends HttpServlet {
             LocalDate localDate = LocalDate.now();
             Date sqlDate = Date.valueOf(localDate);
             user.setDatedeCreation(sqlDate);
-            user.setProfilUser(3);//Profil locataire (3)
+            user.setProfilUser(7);//Profil locataire (3)
             entityManager.persist(user);
             //Valider la transaction
             transaction.commit();

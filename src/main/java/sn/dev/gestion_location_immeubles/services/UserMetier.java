@@ -7,6 +7,7 @@ import sn.dev.gestion_location_immeubles.DAO.Utilisateurs;
 
 import javax.persistence.*;
 import java.lang.reflect.Type;
+import java.util.List;
 
 public class UserMetier {
     EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("default");
@@ -19,6 +20,19 @@ public class UserMetier {
             TypedQuery<Utilisateurs> query=entityManager.createQuery(sql,Utilisateurs.class);
             query.setParameter("emailUser",email);
             return query.getSingleResult();
+        }catch (Exception e) {
+            if(transaction.isActive())
+                transaction.rollback();
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public List<Utilisateurs> getUsers(){
+        try {
+            transaction.begin();
+            String sql="SELECT u FROM Utilisateurs u";
+            Query query=entityManager.createQuery(sql,Utilisateurs.class);
+            return (List<Utilisateurs>) query.getResultList();
         }catch (Exception e) {
             if(transaction.isActive())
                 transaction.rollback();

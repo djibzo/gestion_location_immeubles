@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sn.dev.gestion_location_immeubles.DAO.Utilisateurs;
 import sn.dev.gestion_location_immeubles.services.UserMetier;
 
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -37,6 +38,7 @@ public class LoginServlet extends HttpServlet {
             // Vérifier si le mot de passe saisi correspond au mot de passe haché stocké
             if (passwordEncoder.matches(mdpUser, storedHashedPassword)) {
                 req.getSession().setAttribute("username",emailUser);
+                req.getSession().setAttribute("profil",user.getProfilUser());
                 resp.sendRedirect("welcome");
             } else {
                 System.out.println("Login ou mot de passe incorrect");
