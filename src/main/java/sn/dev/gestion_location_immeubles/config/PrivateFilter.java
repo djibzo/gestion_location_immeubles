@@ -22,6 +22,7 @@ public class PrivateFilter implements Filter {
         HttpSession session = req.getSession();
 
         String username = (String) session.getAttribute("username");
+        Integer profil= (Integer) session.getAttribute("profil");
         String chemin = req.getServletPath();
         String method = req.getMethod();
 
@@ -36,6 +37,7 @@ public class PrivateFilter implements Filter {
         } else {
             resp.sendRedirect(req.getContextPath() + "/login"); // Redirige vers la page de login
         }
+
     }
 
     @Override

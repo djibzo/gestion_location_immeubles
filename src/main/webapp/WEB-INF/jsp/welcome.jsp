@@ -26,6 +26,11 @@
                         <a class="nav-link" href="admin">Liste utilisateurs</a>
                     </li>
                 <% } %>
+                <% if (profil==7) {%>
+                <li class="nav-item">
+                    <a class="nav-link" href="immeubles">Gestion Immeubles</a>
+                </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Options

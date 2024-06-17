@@ -40,4 +40,17 @@ public class UserMetier {
             return null;
         }
     }
+    public List<Utilisateurs> getProprietaire(){
+        try {
+            transaction.begin();
+            String sql="SELECT u FROM Utilisateurs u WHERE u.profilUser = 2";
+            Query query=entityManager.createQuery(sql,Utilisateurs.class);
+            return (List<Utilisateurs>) query.getResultList();
+        }catch (Exception e) {
+            if(transaction.isActive())
+                transaction.rollback();
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

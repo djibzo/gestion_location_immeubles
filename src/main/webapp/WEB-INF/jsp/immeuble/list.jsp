@@ -1,11 +1,13 @@
 <%@ page import="sn.dev.gestion_location_immeubles.services.UserMetier" %>
 <%@ page import="java.util.List" %>
 <%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.ImmeubleMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.Immeubles" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    UserMetier userMetier = new UserMetier();
-    List<Utilisateurs> users=userMetier.getUsers();
-    System.out.println(users);
+    ImmeubleMetier immeubleMetier = new ImmeubleMetier();
+    List<Immeubles> immeubles=immeubleMetier.getImmeubles();
+    System.out.println(immeubles);
 %>
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
@@ -160,47 +162,27 @@
         <table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
             <thead>
             <tr>
-                <th data-priority="1">Prenom</th>
-                <th data-priority="2">Nom</th>
-                <th data-priority="3">Email</th>
-                <th data-priority="4">Profil</th>
-                <th data-priority="5">Date de creation</th>
-                <th data-priority="6">Action</th>
+                <th data-priority="1">Nom</th>
+                <th data-priority="2">Adresse</th>
+                <th data-priority="3">Proprietaire</th>
+                <th data-priority="4">Date de creation</th>
+                <th data-priority="5">Actions</th>
             </tr>
             </thead>
             <tbody>
             <%
-                for (Utilisateurs user : users)
+                for (Immeubles immeuble : immeubles)
                 {
             %>
             <tr>
-                <td><%= user.getPrenomUser() %></td>
-                <td><%= user.getNomUser() %></td>
-                <td><%= user.getEmailUser() %></td>
+                <td><%= immeuble.getNomImmeuble() %></td>
+                <td><%= immeuble.getAdresseImmeuble() %></td>
+                <td><%= immeuble.getUtilisateursByIdProprietaire().getPrenomUser()+" "+immeuble.getUtilisateursByIdProprietaire().getNomUser()%></td>
+                <td><%= immeuble.getDatedeCreation() %></td>
                 <td>
-                    <% if (user.getProfilUser()==3){%>
-                        Locataire
-                    <%}%>
-                    <% if (user.getProfilUser()==7){%>
-                    Admin
-                    <%}%>
-                    <% if (user.getProfilUser()==2){%>
-                    Proprietaire
-                    <%}%>
-                </td>
-                <td><%= user.getDatedeCreation() %></td>
-                <td>
-                    <a class="btn btn-primary" href="admin/<%= user.getIdUser() %>">Modifier</a>
-                    <a class="btn btn-danger" href="admin/delete/<%= user.getIdUser() %>">Supprimer</a>
-                    <% if (user.getProfilUser()==3){%>
-                    <a class="btn btn-success" href="admin/update/<%= user.getIdUser() %>">Activer</a>
-                    <%}%>
-                    <% if (user.getProfilUser()==7){%>
-                    <a class="btn btn-danger" href="admin/update/<%= user.getIdUser() %>">Desactiver</a>
-                    <%}%>
-                    <% if (user.getProfilUser()==2){%>
-                    <a class="btn btn-success" href="admin/update/<%= user.getIdUser() %>">Activer</a>
-                    <%}%>
+                    <a class="btn btn-primary" href="immeuble/<%= immeuble.getIdImmeuble() %>">Modifier</a>
+                    <a class="btn btn-danger" href="immeuble/<%= immeuble.getIdImmeuble() %>/supprimer">Supprimer</a>
+                    <a class="btn btn-info" href="immeuble/<%= immeuble.getIdImmeuble() %>/reservations">Details</a>
                 </td>
             </tr>
             <%
@@ -209,17 +191,11 @@
             </tbody>
 
         </table>
-
-
+        <a href="immeubles.do?action=add" class="btn btn-success" href="">Ajouter un nouveau immeuble</a>
     </div>
     <!--/Card-->
-
-
 </div>
 <!--/container-->
-
-
-
 
 
 <!-- jQuery -->
