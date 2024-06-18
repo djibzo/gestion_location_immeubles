@@ -156,45 +156,6 @@ List<Unitesdelocations> unitesloc=metierUniteLoc.getUnitesdelocationsByIdImmeubl
         </div>
     </div>
 </nav>
-<%--<div class="container mt-5 col-md-5 col-xm-12 col-sm-6 col-md-offset-3">--%>
-<%--    <div class="card">--%>
-<%--        <div class="card-header center">--%>
-<%--            Parametrage Immeuble--%>
-<%--        </div>--%>
-<%--        <div class="card-body">--%>
-<%--            <form action="update" method="post">--%>
-<%--                <input type="hidden" name="idImmeuble" value="<%= immeuble.getIdImmeuble() %>">--%>
-<%--                <div class="form-group">--%>
-<%--                    <label class="control-label">Adresse </label>--%>
-<%--                    <input type="text" class="form-control" name="designation" value="<%= immeuble.getAdresseImmeuble() %>">--%>
-<%--                </div>--%>
-<%--                <br>--%>
-<%--                <div class="form-group">--%>
-<%--                    <label ><i class="zmdi zmdi-account material-icons-name"></i></label>--%>
-<%--                    <select class="form-select" name="idProprietaire" >--%>
-<%--                        <%--%>
-<%--                            UserMetier userMetier = new UserMetier();--%>
-<%--                            List<Utilisateurs> utilisateurs = userMetier.getProprietaire();--%>
-<%--                            for (int i = 0; i < utilisateurs.size(); i++) {--%>
-<%--                        %>--%>
-<%--                        <option value="<%= utilisateurs.get(i).getIdUser() %>"><%= utilisateurs.get(i).getPrenomUser() +" "+ utilisateurs.get(i).getNomUser() %></option>--%>
-<%--                        <%--%>
-<%--                            }--%>
-<%--                        %>--%>
-<%--                    </select>--%>
-<%--                </div>--%>
-<%--                <div class="form-group">--%>
-<%--                    <label class="control-label">Description </label>--%>
-<%--                    <input type="text" class="form-control" name="designation" value="<%= immeuble.getDescription() %>">--%>
-<%--                </div>--%>
-<%--                <br>--%>
-<%--                <div>--%>
-<%--                    <button type="submit" class="btn btn-outline-success">Modifier</button>--%>
-<%--                </div>--%>
-<%--            </form>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
 <!--Container-->
 <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-3">
     <!--Card-->
@@ -242,7 +203,7 @@ List<Unitesdelocations> unitesloc=metierUniteLoc.getUnitesdelocationsByIdImmeubl
             </tbody>
 
         </table>
-        <a href="" class="btn btn-success" href="">Ajouter une nouvelle unité</a>
+        <a href="uniteloc.od?idImmeuble=<%= immeuble.getIdImmeuble() %>" class="btn btn-success" >Ajouter une nouvelle unité</a>
     </div>
     <!--/Card-->
 </div>
@@ -265,5 +226,5 @@ List<Unitesdelocations> unitesloc=metierUniteLoc.getUnitesdelocationsByIdImmeubl
             .responsive.recalc();
     });
 </script>
-<%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>--%>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>
 </html>

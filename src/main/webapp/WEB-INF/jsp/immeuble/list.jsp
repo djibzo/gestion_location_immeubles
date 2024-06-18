@@ -6,7 +6,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     ImmeubleMetier immeubleMetier = new ImmeubleMetier();
-    List<Immeubles> immeubles=immeubleMetier.getImmeubles();
+    Integer profil = (Integer) session.getAttribute("profil");
+    Integer idProprio = (Integer) session.getAttribute("idProprio");
+    List<Immeubles> immeubles=profil==7?immeubleMetier.getImmeubles():immeubleMetier.getImmeublesByIdProprio(idProprio);
     System.out.println(immeubles);
 %>
 <!DOCTYPE html>
@@ -134,12 +136,16 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
+                <% if (profil==7) {%>
                 <li class="nav-item">
                     <a class="nav-link" href="admin">Liste utilisateurs</a>
                 </li>
+                <% } %>
+                <% if (profil==7 || profil==2) {%>
                 <li class="nav-item">
                     <a class="nav-link" href="immeubles">Gestion Immeubles</a>
                 </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Options
@@ -192,7 +198,7 @@
             </tbody>
 
         </table>
-        <a href="immeubles.do?action=add" class="btn btn-success" href="">Ajouter un nouveau immeuble</a>
+        <a  href="immeubles.do?action=add" class="btn btn-success" <%= profil==7?"":"hidden" %> >Ajouter un nouveau immeuble</a>
     </div>
     <!--/Card-->
 </div>

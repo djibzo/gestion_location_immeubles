@@ -88,7 +88,7 @@
                     </div>
                     <div class="form-group">
                         <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <input type="text" name="description" id="email" placeholder="Email"/>
+                        <input type="text" name="description" id="email" placeholder="Description"/>
                     </div>
                     <div class="form-group form-button">
                         <input type="submit" name="enregistrer" class="form-submit" value="Enregistrer"/>

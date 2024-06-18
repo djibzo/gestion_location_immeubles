@@ -39,6 +39,7 @@ public class LoginServlet extends HttpServlet {
             if (passwordEncoder.matches(mdpUser, storedHashedPassword)) {
                 req.getSession().setAttribute("username",emailUser);
                 req.getSession().setAttribute("profil",user.getProfilUser());
+                req.getSession().setAttribute("idProprio",user.getIdUser());
                 resp.sendRedirect("welcome");
             } else {
                 System.out.println("Login ou mot de passe incorrect");

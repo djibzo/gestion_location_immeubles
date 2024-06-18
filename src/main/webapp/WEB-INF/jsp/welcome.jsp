@@ -7,7 +7,6 @@
 <body>
 <%
     Integer profil = (Integer) session.getAttribute("profil");
-    System.out.println(profil);
 %>
 
 <nav class="navbar navbar-light navbar-expand-lg bg-body-tertiary " style="background-color: #e3f2fd;">
