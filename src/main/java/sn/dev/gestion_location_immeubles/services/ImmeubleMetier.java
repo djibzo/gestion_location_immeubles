@@ -23,4 +23,18 @@ public class ImmeubleMetier {
             return null;
         }
     }
+    public Immeubles getImmeublesById(int idIm){
+        try {
+            transaction.begin();
+            String sql="SELECT im FROM Immeubles im WHERE im.idImmeuble=:idIm";
+            TypedQuery<Immeubles> query=entityManager.createQuery(sql,Immeubles.class);
+            query.setParameter("idIm",idIm);
+            return query.getSingleResult();
+        }catch (Exception e) {
+            if(transaction.isActive())
+                transaction.rollback();
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

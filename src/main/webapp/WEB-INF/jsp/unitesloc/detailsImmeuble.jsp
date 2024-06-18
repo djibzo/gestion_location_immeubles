@@ -1,28 +1,25 @@
-<%@ page import="sn.dev.gestion_location_immeubles.services.UserMetier" %>
-<%@ page import="java.util.List" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
-<%@ page import="sn.dev.gestion_location_immeubles.services.ImmeubleMetier" %>
 <%@ page import="sn.dev.gestion_location_immeubles.DAO.Immeubles" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.UserMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
+<%@ page import="java.util.List" %>
+<%@ page import="sn.dev.gestion_location_immeubles.controllers.UniteLocServlet" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.UniteLocMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.Unitesdelocations" %><%--
+  Created by IntelliJ IDEA.
+  User: hp
+  Date: 18/06/2024
+  Time: 15:38
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    ImmeubleMetier immeubleMetier = new ImmeubleMetier();
-    List<Immeubles> immeubles=immeubleMetier.getImmeubles();
-    System.out.println(immeubles);
+<% Immeubles immeuble = (Immeubles) request.getAttribute("immeuble");
+    UniteLocMetier metierUniteLoc = new UniteLocMetier();
+List<Unitesdelocations> unitesloc=metierUniteLoc.getUnitesdelocationsByIdImmeuble(immeuble.getIdImmeuble());
 %>
-<!DOCTYPE html>
-<html lang="en" class="antialiased">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>GLI-PRO </title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <title>Parametrage</title>
     <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel=" stylesheet">
-    <!--Replace with your tailwind.css once created-->
-
-
     <!--Regular Datatables CSS-->
     <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
     <!--Responsive Extension Datatables CSS-->
@@ -119,11 +116,13 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-
 </head>
-
-<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
-<nav class="navbar navbar-light navbar-expand-lg bg-body-tertiary mb-4 " style="background-color: #e3f2fd;">
+<body>
+<%
+    Integer profil = (Integer) session.getAttribute("profil");
+    System.out.println(profil);
+%>
+<nav class="navbar navbar-light navbar-expand-lg bg-body-tertiary " style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <a class="navbar-brand" href="welcome">GLI-PRO</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -134,12 +133,16 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
+                <% if (profil==7) {%>
                 <li class="nav-item">
                     <a class="nav-link" href="admin">Liste utilisateurs</a>
                 </li>
+                <% } %>
+                <% if (profil==7 || profil==2) {%>
                 <li class="nav-item">
                     <a class="nav-link" href="immeubles">Gestion Immeubles</a>
                 </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Options
@@ -153,38 +156,85 @@
         </div>
     </div>
 </nav>
-
+<%--<div class="container mt-5 col-md-5 col-xm-12 col-sm-6 col-md-offset-3">--%>
+<%--    <div class="card">--%>
+<%--        <div class="card-header center">--%>
+<%--            Parametrage Immeuble--%>
+<%--        </div>--%>
+<%--        <div class="card-body">--%>
+<%--            <form action="update" method="post">--%>
+<%--                <input type="hidden" name="idImmeuble" value="<%= immeuble.getIdImmeuble() %>">--%>
+<%--                <div class="form-group">--%>
+<%--                    <label class="control-label">Adresse </label>--%>
+<%--                    <input type="text" class="form-control" name="designation" value="<%= immeuble.getAdresseImmeuble() %>">--%>
+<%--                </div>--%>
+<%--                <br>--%>
+<%--                <div class="form-group">--%>
+<%--                    <label ><i class="zmdi zmdi-account material-icons-name"></i></label>--%>
+<%--                    <select class="form-select" name="idProprietaire" >--%>
+<%--                        <%--%>
+<%--                            UserMetier userMetier = new UserMetier();--%>
+<%--                            List<Utilisateurs> utilisateurs = userMetier.getProprietaire();--%>
+<%--                            for (int i = 0; i < utilisateurs.size(); i++) {--%>
+<%--                        %>--%>
+<%--                        <option value="<%= utilisateurs.get(i).getIdUser() %>"><%= utilisateurs.get(i).getPrenomUser() +" "+ utilisateurs.get(i).getNomUser() %></option>--%>
+<%--                        <%--%>
+<%--                            }--%>
+<%--                        %>--%>
+<%--                    </select>--%>
+<%--                </div>--%>
+<%--                <div class="form-group">--%>
+<%--                    <label class="control-label">Description </label>--%>
+<%--                    <input type="text" class="form-control" name="designation" value="<%= immeuble.getDescription() %>">--%>
+<%--                </div>--%>
+<%--                <br>--%>
+<%--                <div>--%>
+<%--                    <button type="submit" class="btn btn-outline-success">Modifier</button>--%>
+<%--                </div>--%>
+<%--            </form>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <!--Container-->
-<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-3">
     <!--Card-->
     <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-
+    <h2 class="font-bold text-2xl text-gray-800 mb-4">Liste des unités de locations</h2>
         <table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
             <thead>
             <tr>
-                <th data-priority="1">Nom</th>
-                <th data-priority="2">Adresse</th>
-                <th data-priority="3">Proprietaire</th>
-                <th data-priority="4">Date de creation</th>
-                <th data-priority="5">Actions</th>
+                <th data-priority="1">Nom Unite</th>
+                <th data-priority="2">Nombre de pieces</th>
+                <th data-priority="3">Superficie</th>
+                <th data-priority="4">Prix Loyer</th>
+                <th data-priority="5">Date de création</th>
+                <th data-priority="6">Actions</th>
             </tr>
             </thead>
             <tbody>
             <%
-                for (Immeubles immeuble : immeubles)
+                if (!unitesloc.isEmpty()) {
+                for (Unitesdelocations ul : unitesloc)
                 {
             %>
             <tr>
-                <td><%= immeuble.getNomImmeuble() %></td>
-                <td><%= immeuble.getAdresseImmeuble() %></td>
-                <td><%= immeuble.getUtilisateursByIdProprietaire().getPrenomUser()+" "+immeuble.getUtilisateursByIdProprietaire().getNomUser()%></td>
-                <td><%= immeuble.getDatedeCreation() %></td>
+                <td><%= ul.getNomUnite() %></td>
+                <td><%= ul.getNombrePieces() %></td>
+                <td><%= ul.getSuperficie() %></td>
+                <td><%= ul.getPrixLoyer() %></td>
+                <td><%= ul.getDatedeCreation() %></td>
                 <td>
-<%--                    <a class="btn btn-primary" href="immeuble.do?action=update&id=<%= immeuble.getIdImmeuble() %>">Modifier</a>--%>
-            <a class="btn btn-primary" href="immeuble.do?action=details&id=<%= immeuble.getIdImmeuble() %>">Liste des unites</a>
-            <a class="btn btn-info" href="immeuble.do?action=update&id=<%= immeuble.getIdImmeuble() %>">Modifier</a>
-            <a class="btn btn-danger" href="immeuble.do?action=delete&id=<%= immeuble.getIdImmeuble() %>">Supprimer</a>
+                    <a class="btn btn-primary" href="">Modifier</a>
+                    <a class="btn btn-danger" href="">Supprimer</a>
+                    <a class="btn btn-info" href="">Infos Locataire</a>
                 </td>
+            </tr>
+            <%
+                }
+                }else{
+                    %>
+            <tr>
+                <td colspan="6" class="text-center">Aucune donnée disponible</td>
             </tr>
             <%
                 }
@@ -192,14 +242,14 @@
             </tbody>
 
         </table>
-        <a href="immeubles.do?action=add" class="btn btn-success" href="">Ajouter un nouveau immeuble</a>
+        <a href="" class="btn btn-success" href="">Ajouter une nouvelle unité</a>
     </div>
     <!--/Card-->
 </div>
 <!--/container-->
 
-
-<!-- jQuery -->
+</body>
+<!--Datatables -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <!--Datatables -->
@@ -215,7 +265,5 @@
             .responsive.recalc();
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>
-</body>
-
+<%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>--%>
 </html>

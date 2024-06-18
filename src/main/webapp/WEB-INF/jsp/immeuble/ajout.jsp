@@ -19,9 +19,9 @@
     <title>GLI-PRO </title>
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <link rel="stylesheet" href="http://localhost:8089/gestion_location_immeubles/public/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" text="text/css" href="<%=request.getContextPath()%>/public/fonts/material-icon/css/material-design-iconic-font.min.css">
     <!-- Main css -->
-    <link rel="stylesheet" href="http://localhost:8089/gestion_location_immeubles/public/css/style.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/public/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 
@@ -73,7 +73,7 @@
                     </div>
                     <div class="form-group">
                         <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <select name="idProprietaire" >
+                        <select class="form-select" name="idProprietaire" >
                             <option value="0">Choisir un proprietaire</option>
                             <%
                             UserMetier userMetier = new UserMetier();
@@ -96,7 +96,7 @@
                 </form>
             </div>
             <div class="signup-image">
-                <figure><img src="../../../public/images/immeuble.jpg" alt="immeuble image"></figure>
+                <figure><img src="<%=request.getContextPath()%>/public/images/signup-image.jpg" alt="immeuble image"></figure>
                 <a href="immeubles" class="signup-image-link">Liste des immeubles</a>
             </div>
         </div>
@@ -104,8 +104,8 @@
 </section>
 
 <!-- jQuery -->
-<script src="http://localhost:8089/gestion_location_immeubles/public/vendor/jquery/jquery.min.js"></script>
-<script src="http://localhost:8089/gestion_location_immeubles/public/js/main.js" ></script>
+<script src="<%=request.getContextPath()%>/public/vendor/jquery/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/public/js/main.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>
 </body>

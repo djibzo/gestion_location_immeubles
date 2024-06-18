@@ -1,5 +1,6 @@
 package sn.dev.gestion_location_immeubles.controllers;
 
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sn.dev.gestion_location_immeubles.DAO.Immeubles;
 import sn.dev.gestion_location_immeubles.DAO.Utilisateurs;
+import sn.dev.gestion_location_immeubles.services.ImmeubleMetier;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,6 +21,12 @@ import java.time.LocalDate;
 
 @WebServlet(name = "immeubles",urlPatterns = {"*.do","/immeubles"})
 public class ImmeubleServlet extends HttpServlet {
+    private ImmeubleMetier metier;
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+         metier=new ImmeubleMetier();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -26,6 +34,11 @@ public class ImmeubleServlet extends HttpServlet {
             req.getRequestDispatcher("WEB-INF/jsp/immeuble/ajout.jsp").forward(req, resp);
             System.out.println("create");
             return;
+        }else if(action!=null && action.equals("details")){
+            int idImmeuble=Integer.parseInt(req.getParameter("id"));
+            Immeubles immeuble=metier.getImmeublesById(idImmeuble);
+            req.setAttribute("immeuble",immeuble);
+            req.getRequestDispatcher("WEB-INF/jsp/unitesloc/detailsImmeuble.jsp").forward(req, resp);
         }
         req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
 

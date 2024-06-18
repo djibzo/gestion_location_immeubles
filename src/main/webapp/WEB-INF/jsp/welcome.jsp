@@ -26,7 +26,7 @@
                         <a class="nav-link" href="admin">Liste utilisateurs</a>
                     </li>
                 <% } %>
-                <% if (profil==7) {%>
+                <% if (profil==7 || profil==2) {%>
                 <li class="nav-item">
                     <a class="nav-link" href="immeubles">Gestion Immeubles</a>
                 </li>
