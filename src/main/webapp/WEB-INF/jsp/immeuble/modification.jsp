@@ -3,10 +3,14 @@
 <%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
 <%@ page import="java.util.List" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.UniteLocMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.ImmeubleMetier" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Immeubles immeuble = (Immeubles) request.getAttribute("immeuble");
+//    Immeubles immeuble = (Immeubles) request.getAttribute("immeuble");
+    int idImmeuble=(int)session.getAttribute("idImmeuble");
     Integer profil = (Integer) session.getAttribute("profil");
+    ImmeubleMetier metierIm=new ImmeubleMetier();
+    Immeubles immeuble=metierIm.getImmeublesById(idImmeuble);
 
 %>
 <html>

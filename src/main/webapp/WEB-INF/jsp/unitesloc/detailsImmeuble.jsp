@@ -4,7 +4,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="sn.dev.gestion_location_immeubles.controllers.UniteLocServlet" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.UniteLocMetier" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Unitesdelocations" %><%--
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.Unitesdelocations" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: hp
   Date: 18/06/2024
@@ -12,10 +13,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% Immeubles immeuble = (Immeubles) request.getAttribute("immeuble");
+<%
+//    Immeubles immeuble = (Immeubles) session.getAttribute("immeuble");
+    Integer profil = (Integer) session.getAttribute("profil");
+    int idImmeuble= (int) session.getAttribute("idImmeuble");
     UniteLocMetier metierUniteLoc = new UniteLocMetier();
-List<Unitesdelocations> unitesloc=metierUniteLoc.getUnitesdelocationsByIdImmeuble(immeuble.getIdImmeuble());
-%>
+    List<Unitesdelocations> unitesloc = metierUniteLoc.getUnitesdelocationsByIdImmeuble(idImmeuble);
+    %>
 <html>
 <head>
     <title>Parametrage</title>
@@ -118,10 +122,6 @@ List<Unitesdelocations> unitesloc=metierUniteLoc.getUnitesdelocationsByIdImmeubl
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<%
-    Integer profil = (Integer) session.getAttribute("profil");
-    System.out.println(profil);
-%>
 <nav class="navbar navbar-light navbar-expand-lg bg-body-tertiary " style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <a class="navbar-brand" href="welcome">GLI-PRO</a>
@@ -203,7 +203,7 @@ List<Unitesdelocations> unitesloc=metierUniteLoc.getUnitesdelocationsByIdImmeubl
             </tbody>
 
         </table>
-        <a href="uniteloc.od?idImmeuble=<%= immeuble.getIdImmeuble() %>" class="btn btn-success" >Ajouter une nouvelle unité</a>
+        <a href="uniteloc.od?idImmeuble=<%= idImmeuble %>" class="btn btn-success" >Ajouter une nouvelle unité</a>
     </div>
     <!--/Card-->
 </div>

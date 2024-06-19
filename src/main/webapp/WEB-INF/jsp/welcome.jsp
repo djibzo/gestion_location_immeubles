@@ -30,6 +30,16 @@
                     <a class="nav-link" href="immeubles">Gestion Immeubles</a>
                 </li>
                 <% } %>
+                <% if (profil==7 || profil==3) {%>
+                <li class="nav-item">
+                    <a class="nav-link" href="offre">Offres disponibles</a>
+                </li>
+                <% } %>
+                <% if (profil==3) {%>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Mes demandes</a>
+                </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Options

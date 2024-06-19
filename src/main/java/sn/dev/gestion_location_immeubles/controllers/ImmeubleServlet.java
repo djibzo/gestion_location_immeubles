@@ -38,11 +38,13 @@ public class ImmeubleServlet extends HttpServlet {
             int idImmeuble=Integer.parseInt(req.getParameter("id"));
             Immeubles immeuble=metier.getImmeublesById(idImmeuble);
             req.setAttribute("immeuble",immeuble);
+            req.getSession().setAttribute("idImmeuble", idImmeuble);
             req.getRequestDispatcher("WEB-INF/jsp/unitesloc/detailsImmeuble.jsp").forward(req, resp);
         }else if(action!=null && action.equals("update")){
             int idImmeuble=Integer.parseInt(req.getParameter("id"));
             Immeubles immeuble=metier.getImmeublesById(idImmeuble);
             req.setAttribute("immeuble",immeuble);
+            req.getSession().setAttribute("idImmeuble", idImmeuble);
             req.getRequestDispatcher("WEB-INF/jsp/immeuble/modification.jsp").forward(req, resp);
         }
         req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);

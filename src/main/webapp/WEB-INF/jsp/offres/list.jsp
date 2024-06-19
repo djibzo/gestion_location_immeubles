@@ -3,13 +3,14 @@
 <%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.ImmeubleMetier" %>
 <%@ page import="sn.dev.gestion_location_immeubles.DAO.Immeubles" %>
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.Offres" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.OffreMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.Unitesdelocations" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    ImmeubleMetier immeubleMetier = new ImmeubleMetier();
     Integer profil = (Integer) session.getAttribute("profil");
-    Integer idProprio = (Integer) session.getAttribute("idProprio");
-    List<Immeubles> immeubles=profil==7?immeubleMetier.getImmeubles():immeubleMetier.getImmeublesByIdProprio(idProprio);
-    System.out.println(immeubles);
+    OffreMetier offreMetier = new OffreMetier();
+    List<Object[]> offres=offreMetier.getUnitesdelocationsFromOffres();
 %>
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
@@ -151,6 +152,11 @@
                     <a class="nav-link" href="offre">Offres disponibles</a>
                 </li>
                 <% } %>
+                <% if (profil==3) {%>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Mes demandes</a>
+                </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Options
@@ -174,27 +180,31 @@
             <thead>
             <tr>
                 <th data-priority="1">Nom</th>
-                <th data-priority="2">Adresse</th>
-                <th data-priority="3">Proprietaire</th>
-                <th data-priority="4">Date de creation</th>
-                <th data-priority="5">Actions</th>
+                <th data-priority="2">Nombre de pieces</th>
+                <th data-priority="3">Superficie</th>
+                <th data-priority="4">Prix Loyer</th>
+                <th data-priority="5">Nom Immeuble</th>
+                <th data-priority="6">Adresse Immeuble</th>
+                <th data-priority="7">Actions</th>
             </tr>
             </thead>
             <tbody>
             <%
-                for (Immeubles immeuble : immeubles)
+                for (Object[] row : offres)
                 {
+                    Unitesdelocations unite = (Unitesdelocations) row[0];
+                    Offres offre = (Offres) row[2];
+                    Immeubles immeuble = (Immeubles) row[1];
             %>
             <tr>
-                <td><%= immeuble.getNomImmeuble() %></td>
-                <td><%= immeuble.getAdresseImmeuble() %></td>
-                <td><%= immeuble.getUtilisateursByIdProprietaire().getPrenomUser()+" "+immeuble.getUtilisateursByIdProprietaire().getNomUser()%></td>
-                <td><%= immeuble.getDatedeCreation() %></td>
+                <td><%= unite.getNomUnite() %></td>
+                <td><%= unite.getNombrePieces() %></td>
+                <td><%= unite.getSuperficie() %></td>
+                <td><%= unite.getPrixLoyer()%></td>
+                <td><%= immeuble.getNomImmeuble()%></td>
+                <td><%= immeuble.getAdresseImmeuble()%></td>
                 <td>
-<%--                    <a class="btn btn-primary" href="immeuble.do?action=update&id=<%= immeuble.getIdImmeuble() %>">Modifier</a>--%>
-            <a class="btn btn-primary" href="immeuble.do?action=details&id=<%= immeuble.getIdImmeuble() %>">Liste des unites</a>
-            <a class="btn btn-info" href="immeuble.do?action=update&id=<%= immeuble.getIdImmeuble() %>">Modifier</a>
-            <a class="btn btn-danger" href="immeuble.do?action=delete&id=<%= immeuble.getIdImmeuble() %>">Supprimer</a>
+                    <a  class="btn btn-primary <%= profil==7?"btn disabled":"" %> " href="">Faire une demande</a>
                 </td>
             </tr>
             <%
@@ -203,7 +213,6 @@
             </tbody>
 
         </table>
-        <a  href="immeubles.do?action=add" class="btn btn-success" <%= profil==7?"":"hidden" %> >Ajouter un nouveau immeuble</a>
     </div>
     <!--/Card-->
 </div>
