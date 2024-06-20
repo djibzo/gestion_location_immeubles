@@ -5,7 +5,8 @@
 <%@ page import="sn.dev.gestion_location_immeubles.controllers.UniteLocServlet" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.UniteLocMetier" %>
 <%@ page import="sn.dev.gestion_location_immeubles.DAO.Unitesdelocations" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.OffreMetier" %><%--
   Created by IntelliJ IDEA.
   User: hp
   Date: 18/06/2024
@@ -19,6 +20,7 @@
     int idImmeuble= (int) session.getAttribute("idImmeuble");
     UniteLocMetier metierUniteLoc = new UniteLocMetier();
     List<Unitesdelocations> unitesloc = metierUniteLoc.getUnitesdelocationsByIdImmeuble(idImmeuble);
+    OffreMetier offreMetier=new OffreMetier();
     %>
 <html>
 <head>
@@ -188,6 +190,9 @@
                     <a class="btn btn-primary" href="">Modifier</a>
                     <a class="btn btn-danger" href="">Supprimer</a>
                     <a class="btn btn-info" href="">Infos Locataire</a>
+                    <input hidden="hidden" value=" <%  boolean ok = offreMetier.verifOffreExist(ul.getIdUnite()); %>">
+                    <a class="btn <%= ok?"btn-danger":"btn-success" %>" href="<%= ok?"":"puboffre.fa?action=pub&idUnite="+ul.getIdUnite() %>"><%= ok?"Depublier":"Publier" %></a>
+
                 </td>
             </tr>
             <%

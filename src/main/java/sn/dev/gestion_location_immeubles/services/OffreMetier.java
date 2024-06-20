@@ -4,6 +4,8 @@ import sn.dev.gestion_location_immeubles.DAO.Offres;
 import sn.dev.gestion_location_immeubles.DAO.Unitesdelocations;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class OffreMetier {
@@ -43,5 +45,42 @@ public class OffreMetier {
        }
 
        return results;
+   }
+   public void publierOffreByIdUnite(int id){
+       try{
+           transaction.begin();
+           LocalDate localDate = LocalDate.now();
+           Date sqlDate = Date.valueOf(localDate);
+           Offres offre=new Offres();
+           offre.setDatedeCreation(sqlDate);
+           offre.setStatut(1);
+           offre.setIdUnite(id);
+           entityManager.persist(offre);
+           //Valider la transaction
+           transaction.commit();
+           System.out.println("Transaction successful");
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+   }
+   public boolean verifOffreExist(int id){
+        try {
+            transaction.begin();
+            String sql = "SELECT ofr FROM Offres ofr WHERE ofr.idUnite=:idU";
+            javax.persistence.Query query = entityManager.createQuery(sql, Offres.class);
+            query.setParameter("idU", id);
+            Offres offre = (Offres) query.getSingleResult();
+            if (offre!= null) {
+                transaction.commit();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            if (transaction.isActive())
+                transaction.rollback();
+            System.out.println(e.getMessage());
+        }
+        return false;
    }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "offres",urlPatterns = {"/offre"})
+@WebServlet(name = "offres",urlPatterns = {"/offre","*.fa"})
 public class OffreServlet extends HttpServlet {
     private OffreMetier metier;
 
@@ -24,6 +24,12 @@ public class OffreServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action=req.getParameter("action");
+        if (action!=null && action.equals("pub")){
+            int idUnite=Integer.parseInt(req.getParameter("idUnite"));
+            metier.publierOffreByIdUnite(idUnite);
+            req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
+        }
         req.getRequestDispatcher("WEB-INF/jsp/offres/list.jsp").forward(req, resp);
     }
 }
