@@ -1,18 +1,15 @@
 <%@ page import="sn.dev.gestion_location_immeubles.services.UserMetier" %>
 <%@ page import="java.util.List" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.ImmeubleMetier" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Immeubles" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Offres" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.OffreMetier" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Unitesdelocations" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.DemandeMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Integer profil = (Integer) session.getAttribute("profil");
-    OffreMetier offreMetier = new OffreMetier();
-    List<Object[]> offres=offreMetier.getUnitesdelocationsFromOffres();
     DemandeMetier demandeMetier=new DemandeMetier();
+    List<Object[]> demandes=demandeMetier.getDemandesByidUser((Integer) session.getAttribute("idProprio"));
+    System.out.println(demandes.get(0));
 %>
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
@@ -156,7 +153,7 @@
                 <% } %>
                 <% if (profil==3) {%>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Mes demandes</a>
+                    <a class="nav-link" href="demande">Mes demandes</a>
                 </li>
                 <% } %>
                 <li class="nav-item dropdown">
@@ -185,30 +182,28 @@
                 <th data-priority="2">Nombre de pieces</th>
                 <th data-priority="3">Superficie</th>
                 <th data-priority="4">Prix Loyer</th>
-                <th data-priority="5">Nom Immeuble</th>
-                <th data-priority="6">Adresse Immeuble</th>
-                <th data-priority="7">Actions</th>
+<%--                <th data-priority="5">Nom Immeuble</th>--%>
+<%--                <th data-priority="6">Adresse Immeuble</th>--%>
+                <th data-priority="5">Actions</th>
             </tr>
             </thead>
             <tbody>
             <%
-                for (Object[] row : offres)
+                for (Object[] row : demandes)
                 {
-                    Unitesdelocations unite = (Unitesdelocations) row[0];
-                    Offres offre = (Offres) row[2];
-                    Immeubles immeuble = (Immeubles) row[1];
+                    Unitesdelocations unite = (Unitesdelocations) row[2];
+                    Demandes demande = (Demandes) row[0];
+                    Offres offre = (Offres) row[1];
             %>
-            <tr <%= demandeMetier.verifIfUserPostuled(offre.getIdOffre(), (Integer) session.getAttribute("idProprio"))?"hidden":"" %> >
+            <tr>
                 <td><%= unite.getNomUnite() %></td>
                 <td><%= unite.getNombrePieces() %></td>
                 <td><%= unite.getSuperficie() %></td>
                 <td><%= unite.getPrixLoyer()%></td>
-                <td><%= immeuble.getNomImmeuble()%></td>
-                <td><%= immeuble.getAdresseImmeuble()%></td>
                 <td>
                     <form method="post" action="demande">
                         <input hidden="hidden" name="idOffre" value="<%= offre.getIdOffre() %>">
-                    <button type="submit"  class="btn btn-primary <%= profil==7?"btn disabled":"" %> " >Faire une demande</button>
+                        <button type="submit"  class="btn btn-primary <%= profil==7?"btn disabled":"" %> " >Annuler la demande</button>
                     </form>
                 </td>
             </tr>

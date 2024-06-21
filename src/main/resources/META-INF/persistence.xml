@@ -10,6 +10,7 @@
         <class>sn.dev.gestion_location_immeubles.DAO.Paiements</class>
         <class>sn.dev.gestion_location_immeubles.DAO.Unitesdelocations</class>
         <class>sn.dev.gestion_location_immeubles.DAO.Utilisateurs</class>
+        <class>sn.dev.gestion_location_immeubles.DAO.Demandes</class>
 
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/gestion_location_immeubles"/>
