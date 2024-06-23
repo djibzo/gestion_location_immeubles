@@ -22,14 +22,30 @@ public class OffreServlet extends HttpServlet {
         metier=new OffreMetier();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action=req.getParameter("action");
-        if (action!=null && action.equals("pub")){
-            int idUnite=Integer.parseInt(req.getParameter("idUnite"));
-            metier.publierOffreByIdUnite(idUnite);
-            req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
-        }
-        req.getRequestDispatcher("WEB-INF/jsp/offres/list.jsp").forward(req, resp);
+    /**
+ * Gère les requêtes HTTP GET pour le servlet offres.
+ * Il prend en charge deux actions : "pub" et "depub".
+ * Si l'action est "pub", il publie une offre pour une unité spécifique en appelant la méthode {@link OffreMetier#publierOffreByIdUnite(int)}.
+ * Si l'action est "depub", il dépublie une offre pour une unité spécifique en appelant la méthode {@link OffreMetier#depublierOffreByIdUnite(int)}.
+ * Après avoir traité l'action, il transfère la requête vers la page JSP appropriée.
+ *
+ * @param req  L'objet {@link HttpServletRequest} qui contient les paramètres de requête du client
+ * @param resp L'objet {@link HttpServletResponse} qui contient la réponse que le servlet envoie au client
+ * @throws ServletException Si la requête pour la méthode GET n'est pas gérée par ce servlet
+ * @throws IOException      Si une erreur d'entrée ou de sortie se produit pendant que le servlet gère la requête GET
+ */
+@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    String action = req.getParameter("action");
+    if (action != null && action.equals("pub")) {
+        int idUnite = Integer.parseInt(req.getParameter("idUnite"));
+        metier.publierOffreByIdUnite(idUnite);
+        req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
+    } else if (action != null && action.equals("depub")) {
+        int idUnite = Integer.parseInt(req.getParameter("idUnite"));
+        metier.depublierOffreByIdUnite(idUnite);
+        req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
     }
+    req.getRequestDispatcher("WEB-INF/jsp/offres/list.jsp").forward(req, resp);
+}
 }

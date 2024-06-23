@@ -187,11 +187,11 @@
                 <td><%= ul.getPrixLoyer() %></td>
                 <td><%= ul.getDatedeCreation() %></td>
                 <td>
-                    <a class="btn btn-primary" href="">Modifier</a>
-                    <a class="btn btn-danger" href="">Supprimer</a>
+                    <a class="btn btn-primary" href="uniteloc.od?action=update&id=<%= ul.getIdUnite() %>">Modifier</a>
+                    <a class="btn btn-danger" href="uniteloc.od?action=delete&id=<%= ul.getIdUnite() %>">Supprimer</a>
                     <a class="btn btn-info" href="">Infos Locataire</a>
-                    <input hidden="hidden" value=" <%  boolean ok = offreMetier.verifOffreExist(ul.getIdUnite()); %>">
-                    <a class="btn <%= ok?"btn-danger":"btn-success" %>" href="<%= ok?"":"puboffre.fa?action=pub&idUnite="+ul.getIdUnite() %>"><%= ok?"Depublier":"Publier" %></a>
+                    <input hidden="hidden" value=" <%  boolean ok = offreMetier.verifOffreActive(ul.getIdUnite()); %>">
+                    <a class="btn <%= ok?"btn-warning":"btn-success" %>" href="<%= ok?"puboffre.fa?action=depub&idUnite="+ul.getIdUnite():"puboffre.fa?action=pub&idUnite="+ul.getIdUnite() %>"><%= ok?"Depublier":"Publier" %></a>
 
                 </td>
             </tr>

@@ -32,7 +32,6 @@ public class DemandeMetier {
             e.printStackTrace();
         }
     }
-
     public boolean verifIfUserPostuled(int idOffre, int idUser) {
         try {
             transaction.begin();
@@ -54,7 +53,6 @@ public class DemandeMetier {
         }
         return false;
     }
-
     public List<Object[]> getDemandesByidUser(int idU) {
         List<Object[]> results = null;
         try {
@@ -72,5 +70,4 @@ public class DemandeMetier {
         }
         return results;
     }
-
 }

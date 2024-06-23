@@ -28,7 +28,7 @@ public class Immeubles {
     @ManyToOne
     @JoinColumn(name = "idProprietaire", referencedColumnName = "idUser", nullable = false,insertable = false, updatable = false)
     private Utilisateurs utilisateursByIdProprietaire;
-    @OneToMany(mappedBy = "immeublesByIdImmeuble")
+    @OneToMany(mappedBy = "immeublesByIdImmeuble",cascade = CascadeType.ALL,orphanRemoval = true)
     private Collection<Unitesdelocations> unitesdelocationsByIdImmeuble;
 
     public int getIdImmeuble() {

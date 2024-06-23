@@ -46,6 +46,10 @@ public class ImmeubleServlet extends HttpServlet {
             req.setAttribute("immeuble",immeuble);
             req.getSession().setAttribute("idImmeuble", idImmeuble);
             req.getRequestDispatcher("WEB-INF/jsp/immeuble/modification.jsp").forward(req, resp);
+        }else if(action!=null && action.equals("delete")){
+            int idImmeuble=Integer.parseInt(req.getParameter("id"));
+            metier.deleteImmeuble(idImmeuble);
+            req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
         }
         req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
 

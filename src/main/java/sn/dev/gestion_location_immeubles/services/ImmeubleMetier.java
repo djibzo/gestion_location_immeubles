@@ -50,5 +50,19 @@ public class ImmeubleMetier {
             System.out.println(e.getMessage());
             return null;
         }
+
+    }
+    public void deleteImmeuble(int id){
+        try {
+            transaction.begin();
+            Immeubles im=entityManager.find(Immeubles.class,id);
+            entityManager.remove(im);
+            transaction.commit();
+        }catch (Exception e) {
+            if(transaction.isActive())
+                transaction.rollback();
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

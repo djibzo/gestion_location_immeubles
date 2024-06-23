@@ -30,7 +30,7 @@ public class Unitesdelocations {
     private int idImmeuble;
     @OneToMany(mappedBy = "unitesdelocationsByIdUnite")
     private Collection<Contratsdelocations> contratsdelocationsByIdUnite;
-    @OneToMany(mappedBy = "unitesdelocationsByIdUnite")
+    @OneToMany(mappedBy = "unitesdelocationsByIdUnite", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Offres> offresByIdUnite;
     @ManyToOne
     @JoinColumn(name = "idImmeuble", referencedColumnName = "idImmeuble", nullable = false,insertable = false, updatable = false)
