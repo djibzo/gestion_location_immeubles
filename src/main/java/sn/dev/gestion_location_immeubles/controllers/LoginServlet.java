@@ -43,11 +43,13 @@ public class LoginServlet extends HttpServlet {
                 resp.sendRedirect("welcome");
             } else {
                 System.out.println("Login ou mot de passe incorrect");
-                resp.sendRedirect("login");
+                req.setAttribute("errorMessage", "Email ou mot de passe incorrect");
+                req.getRequestDispatcher("connexion.jsp").forward(req, resp);
             }
         } else {
             System.out.println("User not found");
-            resp.sendRedirect("login");
+            req.setAttribute("errorMessage", "Email ou mot de passe incorrect");
+            req.getRequestDispatcher("connexion.jsp").forward(req, resp);
         }
     }
 }

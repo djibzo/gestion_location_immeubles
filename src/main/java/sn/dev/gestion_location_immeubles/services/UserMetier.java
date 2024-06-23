@@ -53,4 +53,38 @@ public class UserMetier {
             return null;
         }
     }
+    /**
+ * This method verifies if a given email already exists in the database.
+ *
+ * @param email The email to be checked.
+ * @return true if the email exists in the database, false otherwise.
+ * @throws Exception If any error occurs during the database operation.
+ */
+public boolean verifIfEmailExists(String email) {
+    try {
+        // Begin a transaction
+        transaction.begin();
+
+        // Create a query to select users with the given email
+        String sql="SELECT u FROM Utilisateurs u WHERE u.emailUser=:emailUser";
+        TypedQuery<Utilisateurs> query=entityManager.createQuery(sql,Utilisateurs.class);
+        query.setParameter("emailUser",email);
+
+        // Check if the query returns any result
+        if(query.getResultList().isEmpty())
+            return false; // Email does not exist
+        else
+            return true; // Email exists
+    }catch (Exception e) {
+        // Rollback the transaction if it is still active
+        if(transaction.isActive())
+            transaction.rollback();
+
+        // Print the error message
+        System.out.println(e.getMessage());
+
+        // Return false in case of any error
+        return false;
+    }
+}
 }

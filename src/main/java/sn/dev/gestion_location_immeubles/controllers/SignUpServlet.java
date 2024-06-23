@@ -1,5 +1,6 @@
 package sn.dev.gestion_location_immeubles.controllers;
 
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,9 +16,17 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import sn.dev.gestion_location_immeubles.services.UserMetier;
 
 @WebServlet(name = "signup",value = "/signup")
 public class SignUpServlet extends HttpServlet {
+    private UserMetier metier;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        metier =new UserMetier();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("inscription.jsp").forward(req, resp);
@@ -34,22 +43,31 @@ public class SignUpServlet extends HttpServlet {
             String nomUser=req.getParameter("nomUser");
             String emailUser=req.getParameter("emailUser");
             String mdpUser=req.getParameter("mdpUser");
-            Utilisateurs user=new Utilisateurs();
-            user.setPrenomUser(prenomUser);
-            user.setNomUser(nomUser);
-            user.setEmailUser(emailUser);
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            // Hacher le mot de passe
-            String hashedPassword = passwordEncoder.encode(mdpUser);
-            user.setMdpUser(hashedPassword);
-            LocalDate localDate = LocalDate.now();
-            Date sqlDate = Date.valueOf(localDate);
-            user.setDatedeCreation(sqlDate);
-            user.setProfilUser(3);//Profil locataire (3)
-            entityManager.persist(user);
-            //Valider la transaction
-            transaction.commit();
-            System.out.println("Transaction successful");
+            if (metier.verifIfEmailExists(emailUser)){
+                req.setAttribute("errorMessage", "Cet email existe déjà!");
+                req.getRequestDispatcher("inscription.jsp").forward(req, resp);
+                return;
+            }else {
+
+                Utilisateurs user = new Utilisateurs();
+                user.setPrenomUser(prenomUser);
+                user.setNomUser(nomUser);
+                user.setEmailUser(emailUser);
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                // Hacher le mot de passe
+                String hashedPassword = passwordEncoder.encode(mdpUser);
+                user.setMdpUser(hashedPassword);
+                LocalDate localDate = LocalDate.now();
+                Date sqlDate = Date.valueOf(localDate);
+                user.setDatedeCreation(sqlDate);
+                user.setProfilUser(3);//Profil locataire (3)
+                entityManager.persist(user);
+                //Valider la transaction
+                transaction.commit();
+                req.setAttribute("successMessage", "Inscription effectuée avec success !");
+                req.getRequestDispatcher("inscription.jsp").forward(req, resp);
+                System.out.println("Transaction successful");
+            }
         }catch (Exception e){
             if(transaction.isActive())
                  transaction.rollback();

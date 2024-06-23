@@ -38,6 +38,14 @@
                         <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                         <label for="remember-me" class="label-agree-term"><span><span></span></span>Se souvenir de moi</label>
                     </div>
+                    <%
+                        String errorMessage = (String) request.getAttribute("errorMessage");
+                        if (errorMessage != null) {
+                    %>
+                    <p style="color:red;"><%= errorMessage %></p>
+                    <%
+                        }
+                    %>
                     <div class="form-group form-button">
                         <input type="submit" name="signin" id="signin" class="form-submit" value="Se connecter"/>
                     </div>
@@ -49,5 +57,25 @@
 <!-- JS -->
 <script src="./public/vendor/jquery/jquery.min.js"></script>
 <script src="./public/js/main.js"></script>
+<script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("your_pass").value;
+
+        // Validate email field
+        if (email === "") {
+            alert("Veuillez saisir votre email.");
+            event.preventDefault();
+            return;
+        }
+
+        // Validate password field
+        if (password === "") {
+            alert("Veuillez saisir votre mot de passe.");
+            event.preventDefault();
+            return;
+        }
+    });
+</script>
 </body>
 </html>
