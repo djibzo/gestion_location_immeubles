@@ -151,6 +151,11 @@
                     <a class="nav-link" href="offre">Offres disponibles</a>
                 </li>
                 <% } %>
+                <% if (profil==2) {%>
+                <li class="nav-item">
+                    <a class="nav-link" href="demande.op?action=dmsbypro">Demandes postulées</a>
+                </li>
+                <% } %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Options
@@ -203,7 +208,7 @@
             </tbody>
 
         </table>
-        <a  href="immeubles.do?action=add" class="btn btn-success" <%= profil==7?"":"hidden" %> >Ajouter un nouveau immeuble</a>
+        <a  href="immeubles.do?action=add" class="btn btn-success" <%= (profil==7||profil==2)?"":"hidden" %> >Ajouter un nouveau immeuble</a>
     </div>
     <!--/Card-->
 </div>

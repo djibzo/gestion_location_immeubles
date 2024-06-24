@@ -10,7 +10,7 @@ import sn.dev.gestion_location_immeubles.services.DemandeMetier;
 
 import java.io.IOException;
 
-@WebServlet(name ="demande",urlPatterns = {"/demande"})
+@WebServlet(name ="demande",urlPatterns = {"/demande","*.op"})
 public class DemandeServlet extends HttpServlet {
     private DemandeMetier metier;
 
@@ -29,6 +29,10 @@ public class DemandeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if(action!=null && action.equals("dmsbypro")){
+            req.getRequestDispatcher("WEB-INF/jsp/demandes/demandePostulesforPro.jsp").forward(req, resp);
+        }
         req.getRequestDispatcher("WEB-INF/jsp/demandes/list.jsp").forward(req, resp);
     }
 }

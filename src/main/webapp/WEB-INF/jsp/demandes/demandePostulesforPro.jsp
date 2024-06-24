@@ -1,31 +1,29 @@
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Immeubles" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.UserMetier" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
 <%@ page import="java.util.List" %>
-<%@ page import="sn.dev.gestion_location_immeubles.controllers.UniteLocServlet" %>
-<%@ page import="sn.dev.gestion_location_immeubles.services.UniteLocMetier" %>
-<%@ page import="sn.dev.gestion_location_immeubles.DAO.Unitesdelocations" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="sn.dev.gestion_location_immeubles.services.OffreMetier" %><%--
-  Created by IntelliJ IDEA.
-  User: hp
-  Date: 18/06/2024
-  Time: 15:38
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="sn.dev.gestion_location_immeubles.services.ImmeubleMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.OffreMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.services.DemandeMetier" %>
+<%@ page import="sn.dev.gestion_location_immeubles.DAO.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-//    Immeubles immeuble = (Immeubles) session.getAttribute("immeuble");
     Integer profil = (Integer) session.getAttribute("profil");
-    int idImmeuble= (int) session.getAttribute("idImmeuble");
-    UniteLocMetier metierUniteLoc = new UniteLocMetier();
-    List<Unitesdelocations> unitesloc = metierUniteLoc.getUnitesdelocationsByIdImmeuble(idImmeuble);
-    OffreMetier offreMetier=new OffreMetier();
-    %>
-<html>
+    DemandeMetier demandeMetier=new DemandeMetier();
+    List<Object[]> demandes=demandeMetier.getDemandesByProprio((Integer) session.getAttribute("idProprio"));
+%>
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
 <head>
-    <title>Parametrage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GLI-PRO </title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
     <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel=" stylesheet">
+    <!--Replace with your tailwind.css once created-->
+
+
     <!--Regular Datatables CSS-->
     <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
     <!--Responsive Extension Datatables CSS-->
@@ -122,9 +120,11 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
 </head>
-<body>
-<nav class="navbar navbar-light navbar-expand-lg bg-body-tertiary " style="background-color: #e3f2fd;">
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+<nav class="navbar navbar-light navbar-expand-lg bg-body-tertiary mb-4 " style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <a class="navbar-brand" href="welcome">GLI-PRO</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,9 +145,14 @@
                     <a class="nav-link" href="immeubles">Gestion Immeubles</a>
                 </li>
                 <% } %>
-                <% if (profil==2) {%>
+                <% if (profil==7 || profil==3) {%>
                 <li class="nav-item">
-                    <a class="nav-link" href="demande.op?action=dmsbypro">Demandes postulées</a>
+                    <a class="nav-link" href="offre">Offres disponibles</a>
+                </li>
+                <% } %>
+                <% if (profil==3) {%>
+                <li class="nav-item">
+                    <a class="nav-link" href="demande">Mes demandes</a>
                 </li>
                 <% } %>
                 <li class="nav-item dropdown">
@@ -163,66 +168,61 @@
         </div>
     </div>
 </nav>
+
 <!--Container-->
-<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2 mt-3">
+<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
     <!--Card-->
     <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-    <h2 class="font-bold text-2xl text-gray-800 mb-4">Liste des unités de locations</h2>
+        <h2 class="font-bold text-2xl text-gray-800 mb-4">Liste des demandes</h2>
         <table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
             <thead>
             <tr>
-                <th data-priority="1">Nom Unite</th>
-                <th data-priority="2">Nombre de pieces</th>
-                <th data-priority="3">Superficie</th>
+                <th data-priority="1">Demandeur</th>
+                <th data-priority="2">Nom</th>
+                <th data-priority="3">Pieces</th>
                 <th data-priority="4">Prix Loyer</th>
-                <th data-priority="5">Date de création</th>
-                <th data-priority="6">Actions</th>
+                <th data-priority="5">Nom Immeuble</th>
+                <th data-priority="6">Adresse</th>
+                <th data-priority="7">Actions</th>
             </tr>
             </thead>
             <tbody>
             <%
-                if (!unitesloc.isEmpty()) {
-                for (Unitesdelocations ul : unitesloc)
+                for (Object[] row : demandes)
                 {
+                    Unitesdelocations unite = (Unitesdelocations) row[2];
+                    Demandes demande = (Demandes) row[0];
+                    Offres offre = (Offres) row[1];
+                    Immeubles immeuble =(Immeubles) row[3];
+                    Utilisateurs user=(Utilisateurs) row[4];
             %>
             <tr>
-                <td><%= ul.getNomUnite() %></td>
-                <td><%= ul.getNombrePieces() %></td>
-                <td><%= ul.getSuperficie() %></td>
-                <td><%= ul.getPrixLoyer() %></td>
-                <td><%= ul.getDatedeCreation() %></td>
-                <td>
-                    <a class="btn btn-primary" href="uniteloc.od?action=update&id=<%= ul.getIdUnite() %>">Modifier</a>
-                    <a class="btn btn-danger" href="uniteloc.od?action=delete&id=<%= ul.getIdUnite() %>">Supprimer</a>
-                    <a class="btn btn-info" href="">Locataire</a>
-                    <input hidden="hidden" value=" <%  boolean ok = offreMetier.verifOffreActive(ul.getIdUnite()); %>">
-                    <a class="btn <%= ok?"btn-warning":"btn-success" %>" href="<%= ok?"puboffre.fa?action=depub&idUnite="+ul.getIdUnite():"puboffre.fa?action=pub&idUnite="+ul.getIdUnite() %>"><%= ok?"Depub":"Publier" %></a>
+                <td><%= user.getPrenomUser() +" "+ user.getNomUser()%></td>
+                <td><%= unite.getNomUnite() %></td>
+                <td><%= unite.getNombrePieces() %></td>
+                <td><%= unite.getPrixLoyer()%></td>
+                <td><%= immeuble.getNomImmeuble()%></td>
+                <td><%= immeuble.getAdresseImmeuble()%></td>
 
+                <td>
+                    <form method="post" action="">
+                        <button type="submit"  class="btn btn-sm btn-success" >Accepter</button>
+                        <button type="submit"  class="btn btn-sm btn-danger" >Rejeter</button>
+                    </form>
                 </td>
-            </tr>
-            <%
-                }
-                }else{
-                    %>
-            <tr>
-                <td colspan="6" class="text-center">Aucune donnée disponible</td>
             </tr>
             <%
                 }
             %>
             </tbody>
-
         </table>
-        <a href="uniteloc.od?idImmeuble=<%= idImmeuble %>" class="btn btn-success" >Ajouter une nouvelle unité</a>
     </div>
     <!--/Card-->
 </div>
 <!--/container-->
 
-</body>
-<!--Datatables -->
+<!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
 <!--Datatables -->
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
@@ -237,4 +237,6 @@
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>
+</body>
+
 </html>

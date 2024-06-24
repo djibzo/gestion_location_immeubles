@@ -22,7 +22,7 @@ public class DemandeMetier {
             Demandes demande = new Demandes();
             demande.setIdUser(idUser);
             demande.setIdOffre(idOffre);
-            demande.setEtat(-1);
+            demande.setEtat(0);//0 pending
             demande.setDatedecreation(sqlDate);
             entityManager.persist(demande);
             //Valider la transaction
@@ -32,42 +32,89 @@ public class DemandeMetier {
             e.printStackTrace();
         }
     }
-    public boolean verifIfUserPostuled(int idOffre, int idUser) {
-        try {
-            transaction.begin();
-            String sql = "SELECT dm FROM Demandes dm WHERE dm.idOffre=:idOffre AND dm.idUser=:idUser";
-            javax.persistence.Query query = entityManager.createQuery(sql, Demandes.class);
-            query.setParameter("idOffre", idOffre);
-            query.setParameter("idUser", idUser);
-            Demandes demande = (Demandes) query.getSingleResult();
-            if (demande != null) {
-                transaction.commit();
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            if (transaction.isActive())
-                transaction.rollback();
-            System.out.println(e.getMessage());
+    /**
+     * Cette méthode vérifie si un utilisateur a déjà postulé pour une offre spécifique.
+     *
+     * @param idOffre L'id de l'offre.
+     * @param idUser L'id de l'utilisateur.
+     * @return Une valeur booléenne indiquant si l'utilisateur a déjà postulé pour l'offre.
+     *         Retourne true si l'utilisateur a postulé pour l'offre, false sinon.
+     * @throws Exception Si une erreur se produit lors de l'opération de base de données.
+     */
+public boolean verifIfUserPostuled(int idOffre, int idUser) {
+    try {
+        // Begin a transaction
+        transaction.begin();
+
+        // Create a query to select demandes with the given idOffre and idUser
+        String sql = "SELECT dm FROM Demandes dm WHERE dm.idOffre=:idOffre AND dm.idUser=:idUser";
+        javax.persistence.Query query = entityManager.createQuery(sql, Demandes.class);
+        query.setParameter("idOffre", idOffre);
+        query.setParameter("idUser", idUser);
+
+        // Get the single result of the query
+        Demandes demande = (Demandes) query.getSingleResult();
+
+        // Check if the demande exists
+        if (demande != null) {
+            // Commit the transaction
+            transaction.commit();
+            return true; // User has applied for the offer
+        } else {
+            return false; // User has not applied for the offer
         }
-        return false;
+    } catch (Exception e) {
+        // Rollback the transaction if it is still active
+        if (transaction.isActive())
+            transaction.rollback();
+
+        // Print the error message
+        System.out.println(e.getMessage());
     }
+
+    // Return false by default in case of any error
+    return false;
+}
     public List<Object[]> getDemandesByidUser(int idU) {
-        List<Object[]> results = null;
-        try {
-            transaction.begin();
-            String sql = "SELECT dm,ofr,ul" +
-                    " FROM Demandes dm,Offres ofr,Unitesdelocations ul" +
-                    " WHERE dm.idOffre=ofr.idOffre AND ofr.idUnite=ul.idUnite AND dm.idUser=:idU";
-            Query query = entityManager.createQuery(sql, Object[].class);
-            query.setParameter("idU", idU);
-            results = query.getResultList();
-        } catch (Exception e) {
-            if (transaction.isActive())
-                transaction.rollback();
-            System.out.println(e.getMessage());
-        }
-        return results;
+    List<Object[]> results = null;
+    try {
+        transaction.begin();
+        String sql = "SELECT dm,ofr,ul,imm" +
+                       " FROM Demandes dm" +
+                       " JOIN Offres ofr ON dm.idOffre = ofr.idOffre" +
+                       " JOIN Unitesdelocations ul ON ofr.idUnite = ul.idUnite" +
+                       " JOIN Immeubles imm ON ul.idImmeuble = imm.idImmeuble" +
+                       " WHERE dm.idUser = :idU";
+        Query query = entityManager.createQuery(sql, Object[].class);
+        query.setParameter("idU", idU);
+        results = query.getResultList();
+    } catch (Exception e) {
+        if (transaction.isActive())
+            transaction.rollback();
+        System.out.println(e.getMessage());
     }
+    return results;
+}
+    public List<Object[]> getDemandesByProprio(int idU) {
+    List<Object[]> results = null;
+    try {
+        transaction.begin();
+        String sql = "SELECT dm, ofr, ul, imm, usr" +
+                       " FROM Demandes dm" +
+                       " JOIN Offres ofr ON dm.idOffre = ofr.idOffre" +
+                       " JOIN Unitesdelocations ul ON ofr.idUnite = ul.idUnite" +
+                       " JOIN Immeubles imm ON ul.idImmeuble = imm.idImmeuble" +
+                       " JOIN Utilisateurs usr ON dm.idUser = usr.idUser" +
+                       " WHERE imm.idProprietaire = :idU";
+        Query query = entityManager.createQuery(sql, Object[].class);
+        query.setParameter("idU", idU);
+        results = query.getResultList();
+        System.out.println(results);
+    } catch (Exception e) {
+        if (transaction.isActive())
+            transaction.rollback();
+        System.out.println(e.getMessage());
+    }
+    return results;
+}
 }

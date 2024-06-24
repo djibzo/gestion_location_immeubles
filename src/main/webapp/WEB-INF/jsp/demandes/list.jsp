@@ -181,9 +181,10 @@
                 <th data-priority="2">Nombre de pieces</th>
                 <th data-priority="3">Superficie</th>
                 <th data-priority="4">Prix Loyer</th>
-<%--                <th data-priority="5">Nom Immeuble</th>--%>
-<%--                <th data-priority="6">Adresse Immeuble</th>--%>
-                <th data-priority="5">Actions</th>
+                <th data-priority="5">Nom Immeuble</th>
+                <th data-priority="6">Adresse Immeuble</th>
+                <th data-priority="5">Statut demande</th>
+                <th data-priority="6">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -193,16 +194,42 @@
                     Unitesdelocations unite = (Unitesdelocations) row[2];
                     Demandes demande = (Demandes) row[0];
                     Offres offre = (Offres) row[1];
+                    Immeubles immeuble =(Immeubles) row[3];
             %>
             <tr>
                 <td><%= unite.getNomUnite() %></td>
                 <td><%= unite.getNombrePieces() %></td>
                 <td><%= unite.getSuperficie() %></td>
                 <td><%= unite.getPrixLoyer()%></td>
+                <td><%= immeuble.getNomImmeuble()%></td>
+                <td><%= immeuble.getAdresseImmeuble()%></td>
+                <% int etat=demande.getEtat(); %>
+                <td>
+                <%
+                    if(etat==0)
+                    {
+                %>
+                    <span class="badge bg-warning text-dark">En traitement</span>
+                <%
+                    }
+                    else if(etat==1)
+                    {
+                %>
+                    <span class="badge bg-success text-white">Acceptée</span>
+                <%
+                    }
+                    else if(etat==-1)
+                    {
+                %>
+                    <span class="badge bg-danger text-white">Rejetée</span>
+                <%
+                    }
+                %>
+            </td>
                 <td>
                     <form method="post" action="demande">
                         <input hidden="hidden" name="idOffre" value="<%= offre.getIdOffre() %>">
-                        <button type="submit"  class="btn btn-primary <%= profil==7?"btn disabled":"" %> " >Annuler la demande</button>
+                        <button type="submit"  class="btn btn-sm btn-danger <%= (profil==7||etat!=0)?"btn disabled":"" %> " >Annuler la demande</button>
                     </form>
                 </td>
             </tr>

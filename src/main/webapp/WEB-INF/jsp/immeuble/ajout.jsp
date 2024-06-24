@@ -7,7 +7,7 @@
 <%
     ImmeubleMetier immeubleMetier = new ImmeubleMetier();
     List<Immeubles> immeubles=immeubleMetier.getImmeubles();
-    System.out.println(immeubles);
+    Integer profil = (Integer) session.getAttribute("profil");
 %>
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
@@ -71,6 +71,7 @@
                         <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <input type="text" name="adresseImmeuble" id="" placeholder="Adresse"/>
                     </div>
+                    <% if (profil==7){%>
                     <div class="form-group">
                         <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <select class="form-select" name="idProprietaire" >
@@ -86,6 +87,9 @@
                             %>
                         </select>
                     </div>
+                    <% } else { %>
+                    <input hidden="hidden" value="<%= (Integer) session.getAttribute("idProprio") %>" type="text" name="idProprietaire" id="name" placeholder=""/>
+                    <% } %>
                     <div class="form-group">
                         <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <input type="text" name="description" id="email" placeholder="Description"/>

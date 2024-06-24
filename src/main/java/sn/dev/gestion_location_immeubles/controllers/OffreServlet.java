@@ -47,5 +47,5 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws Se
         req.getRequestDispatcher("WEB-INF/jsp/immeuble/list.jsp").forward(req, resp);
     }
     req.getRequestDispatcher("WEB-INF/jsp/offres/list.jsp").forward(req, resp);
-}
+  }
 }
