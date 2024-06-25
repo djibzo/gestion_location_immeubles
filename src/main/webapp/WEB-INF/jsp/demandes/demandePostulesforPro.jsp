@@ -155,13 +155,21 @@
                     <a class="nav-link" href="demande">Mes demandes</a>
                 </li>
                 <% } %>
+                <% if (profil==2) {%>
+                <li class="nav-item">
+                    <a class="nav-link" href="demande.op?action=dmsbypro">Demandes postulées</a>
+                </li>
+                <% } %>
+            </ul>
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Options
+                        <i class="fas fa-user-circle fa-2x"></i>
+                        <% String prenomNomUser = session.getAttribute("prenomNomUser").toString(); %>
+                        <%= prenomNomUser %>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="logout">Deconnexion</a></li>
-
                     </ul>
                 </li>
             </ul>
@@ -205,10 +213,8 @@
                 <td><%= immeuble.getAdresseImmeuble()%></td>
 
                 <td>
-                    <form method="post" action="">
-                        <button type="submit"  class="btn btn-sm btn-success" >Accepter</button>
-                        <button type="submit"  class="btn btn-sm btn-danger" >Rejeter</button>
-                    </form>
+                        <a type="submit" href="accept.op?action=accepter&idDemande=<%= demande.getIdDemande()%>"  class="btn btn-sm btn-success">Accepter</a>
+                        <a type="submit" href="accept.op?action=rejeter&idDemande=<%= demande.getIdDemande() %>" class="btn btn-sm btn-danger">Rejeter</a>
                 </td>
             </tr>
             <%

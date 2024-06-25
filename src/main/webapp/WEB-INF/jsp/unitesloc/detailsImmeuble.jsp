@@ -150,13 +150,16 @@
                     <a class="nav-link" href="demande.op?action=dmsbypro">Demandes postulées</a>
                 </li>
                 <% } %>
+            </ul>
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Options
+                        <i class="fas fa-user-circle fa-2x"></i>
+                        <% String prenomNomUser = session.getAttribute("prenomNomUser").toString(); %>
+                        <%= prenomNomUser %>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="logout">Deconnexion</a></li>
-
                     </ul>
                 </li>
             </ul>

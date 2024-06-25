@@ -105,7 +105,7 @@ public boolean verifIfUserPostuled(int idOffre, int idUser) {
                        " JOIN Unitesdelocations ul ON ofr.idUnite = ul.idUnite" +
                        " JOIN Immeubles imm ON ul.idImmeuble = imm.idImmeuble" +
                        " JOIN Utilisateurs usr ON dm.idUser = usr.idUser" +
-                       " WHERE imm.idProprietaire = :idU";
+                       " WHERE imm.idProprietaire = :idU AND dm.etat="+0;
         Query query = entityManager.createQuery(sql, Object[].class);
         query.setParameter("idU", idU);
         results = query.getResultList();
@@ -116,5 +116,121 @@ public boolean verifIfUserPostuled(int idOffre, int idUser) {
         System.out.println(e.getMessage());
     }
     return results;
-}
+    }
+    public void acceptDemande(int idDemande) {
+        try {
+            transaction.begin();
+            // Find the demande with the given idDemande
+            Demandes demande = entityManager.find(Demandes.class, idDemande);
+
+            // Check if the demande exists
+            if (demande != null) {
+                // Update the etat of the demande
+                demande.setEtat(1); // Set the etat to 1
+
+                // Persist the changes
+                entityManager.persist(demande);
+
+                // Commit the transaction
+                transaction.commit();
+                System.out.println("Demande updated successfully");
+            } else {
+                System.out.println("Demande not found");
+            }
+        } catch (Exception e) {
+            // Rollback the transaction if it is still active
+            if (transaction.isActive())
+                transaction.rollback();
+
+            // Print the error message
+            System.out.println(e.getMessage());
+        }
+    }
+    public void rejectDemande(int idDemande) {
+        try {
+            transaction.begin();
+            // Find the demande with the given idDemande
+            Demandes demande = entityManager.find(Demandes.class, idDemande);
+
+            // Check if the demande exists
+            if (demande != null) {
+                // Update the etat of the demande
+                demande.setEtat(-1); // Set the etat to 1
+
+                // Persist the changes
+                entityManager.persist(demande);
+
+                // Commit the transaction
+                transaction.commit();
+                System.out.println("Demande updated successfully");
+            } else {
+                System.out.println("Demande not found");
+            }
+        } catch (Exception e) {
+            // Rollback the transaction if it is still active
+            if (transaction.isActive())
+                transaction.rollback();
+
+            // Print the error message
+            System.out.println(e.getMessage());
+        }
+    }
+    public int getIdUniteByDemande(int idDemande) {
+        int idUnite = 0; // Initialize with a default value
+
+        try {
+            transaction.begin();
+            // Create a query to select the idUnite from the Offres table using the idOffre from the Demandes table
+            String sql = "SELECT ul.idUnite" +
+                    " FROM Demandes dm" +
+                    " JOIN Offres ofr ON dm.idOffre = ofr.idOffre" +
+                    " JOIN Unitesdelocations ul ON ofr.idUnite = ul.idUnite" +
+                    " WHERE dm.idDemande = :idDemande";
+            Query query = entityManager.createQuery(sql, Integer.class);
+            query.setParameter("idDemande", idDemande);
+
+            // Get the single result of the query
+            idUnite = (int) query.getSingleResult();
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            // Rollback the transaction if it is still active
+            if (transaction.isActive())
+                transaction.rollback();
+
+            // Print the error message
+            System.out.println(e.getMessage());
+        }
+
+        return idUnite;
+    }
+    public int getIdUserByDemande(int idDemande) {
+        int idUser = 0; // Initialize with a default value
+
+        try {
+            transaction.begin();
+            // Create a query to select the idUser from the Demandes table
+            String sql = "SELECT dm.idUser" +
+                    " FROM Demandes dm" +
+                    " WHERE dm.idDemande = :idDemande";
+            Query query = entityManager.createQuery(sql, Integer.class);
+            query.setParameter("idDemande", idDemande);
+
+            // Get the single result of the query
+            idUser = (int) query.getSingleResult();
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            // Rollback the transaction if it is still active
+            if (transaction.isActive())
+                transaction.rollback();
+
+            // Print the error message
+            System.out.println(e.getMessage());
+        }
+
+        return idUser;
+    }
 }

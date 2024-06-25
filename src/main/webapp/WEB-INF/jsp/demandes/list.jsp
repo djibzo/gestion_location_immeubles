@@ -155,13 +155,16 @@
                     <a class="nav-link" href="demande">Mes demandes</a>
                 </li>
                 <% } %>
+            </ul>
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Options
+                        <i class="fas fa-user-circle fa-2x"></i>
+                        <% String prenomNomUser = session.getAttribute("prenomNomUser").toString(); %>
+                        <%= prenomNomUser %>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="logout">Deconnexion</a></li>
-
                     </ul>
                 </li>
             </ul>
@@ -229,7 +232,10 @@
                 <td>
                     <form method="post" action="demande">
                         <input hidden="hidden" name="idOffre" value="<%= offre.getIdOffre() %>">
+                        <% if (etat==0 || etat==-1){%>
                         <button type="submit"  class="btn btn-sm btn-danger <%= (profil==7||etat!=0)?"btn disabled":"" %> " >Annuler la demande</button>
+                        <% } %>
+                        <button type="submit" <%= demande.getEtat()==1?"":"hidden" %>  class="btn btn-sm btn-info" >Imprimer contrat</button>
                     </form>
                 </td>
             </tr>

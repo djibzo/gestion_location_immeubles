@@ -38,6 +38,7 @@ public class LoginServlet extends HttpServlet {
             // Vérifier si le mot de passe saisi correspond au mot de passe haché stocké
             if (passwordEncoder.matches(mdpUser, storedHashedPassword)) {
                 req.getSession().setAttribute("username",emailUser);
+                req.getSession().setAttribute("prenomNomUser",user.getPrenomUser()+" "+user.getNomUser());
                 req.getSession().setAttribute("profil",user.getProfilUser());
                 req.getSession().setAttribute("idProprio",user.getIdUser());
                 resp.sendRedirect("welcome");
