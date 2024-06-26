@@ -87,4 +87,32 @@ public boolean verifIfEmailExists(String email) {
         return false;
     }
 }
+    public Utilisateurs getUserById(int userId) {
+        try {
+            transaction.begin();
+            String sql = "SELECT u FROM Utilisateurs u WHERE u.idUser = :userId";
+            TypedQuery<Utilisateurs> query = entityManager.createQuery(sql, Utilisateurs.class);
+            query.setParameter("userId", userId);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void updateUser(Utilisateurs user) {
+        try {
+            transaction.begin();
+            entityManager.merge(user);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.out.println(e.getMessage());
+        }
+    }
 }

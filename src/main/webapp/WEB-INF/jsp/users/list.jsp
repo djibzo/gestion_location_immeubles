@@ -150,6 +150,7 @@
                         <%= prenomNomUser %>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profil.us?idUser=<%= (Integer) session.getAttribute("idProprio") %>">Profil</a></li>
                         <li><a class="dropdown-item" href="logout">Deconnexion</a></li>
                     </ul>
                 </li>
@@ -215,8 +216,7 @@
             </tbody>
 
         </table>
-
-
+        <a  href="user.us?action=add" class="btn btn-success" >Ajouter un nouveau utilisateur</a>
     </div>
     <!--/Card-->
 

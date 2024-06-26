@@ -3,14 +3,10 @@
 <%@ page import="sn.dev.gestion_location_immeubles.DAO.Utilisateurs" %>
 <%@ page import="java.util.List" %>
 <%@ page import="sn.dev.gestion_location_immeubles.services.UniteLocMetier" %>
-<%@ page import="sn.dev.gestion_location_immeubles.services.ImmeubleMetier" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-//    Immeubles immeuble = (Immeubles) request.getAttribute("immeuble");
-    int idImmeuble=(int)session.getAttribute("idImmeuble");
+    Immeubles immeuble = (Immeubles) request.getAttribute("immeuble");
     Integer profil = (Integer) session.getAttribute("profil");
-    ImmeubleMetier metierIm=new ImmeubleMetier();
-    Immeubles immeuble=metierIm.getImmeublesById(idImmeuble);
 
 %>
 <html>
@@ -65,42 +61,32 @@
 <div class="container mt-5 col-md-5 col-xm-12 col-sm-6 col-md-offset-3">
     <div class="card">
         <div class="card-header center">
-           Modifcation
+            Ajout utilisateur
         </div>
         <div class="card-body">
-            <form action="immeubles.do?action=supdate" method="post">
-                <input type="hidden" name="idImmeuble" value="<%= immeuble.getIdImmeuble() %>">
+            <form action="uniteloc" method="post">
                 <div class="form-group">
-                    <label class="control-label">Nom Immeuble </label>
-                    <input type="text" class="form-control" name="nomImmeuble" value="<%= immeuble.getNomImmeuble() %>">
+                    <label class="control-label">Nom </label>
+                    <input type="text" class="form-control" name="nomUnite" value="">
                 </div>
                 <br>
                 <div class="form-group">
-                    <label class="control-label">Adresse </label>
-                    <input type="text" class="form-control" name="adresseImmeuble" value="<%= immeuble.getAdresseImmeuble() %>">
+                    <label class="control-label">Nombre de pièces </label>
+                    <input type="text" class="form-control" name="nbrePieces" value="">
                 </div>
                 <br>
                 <div class="form-group">
-                    <label ><i class="zmdi zmdi-account material-icons-name"></i></label>
-                    <select class="form-select" name="idProprietaire" >
-                        <%
-                            UserMetier userMetier = new UserMetier();
-                            List<Utilisateurs> utilisateurs = userMetier.getProprietaire();
-                            for (int i = 0; i < utilisateurs.size(); i++) {
-                        %>
-                        <option value="<%= utilisateurs.get(i).getIdUser() %>"><%= utilisateurs.get(i).getPrenomUser() +" "+ utilisateurs.get(i).getNomUser() %></option>
-                        <%
-                            }
-                        %>
-                    </select>
+                    <label class="control-label">Superficie </label>
+                    <input type="text" class="form-control" name="superficie" value="">
                 </div>
+                <br>
                 <div class="form-group">
-                    <label class="control-label">Description </label>
-                    <input type="text" class="form-control" name="description" value="<%= immeuble.getDescription() %>">
+                    <label class="control-label">Prix Loyer </label>
+                    <input type="text" class="form-control" name="prixLoyer" value="">
                 </div>
                 <br>
                 <div>
-                    <button type="submit" class="btn btn-outline-success">Modifier</button>
+                    <button type="submit" class="btn btn-outline-success">Enregistrer</button>
                 </div>
             </form>
         </div>
