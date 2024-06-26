@@ -5,6 +5,7 @@ import sn.dev.gestion_location_immeubles.DAO.Contratsdelocations;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 public class ContratLocationMetier {
     EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("default");
@@ -64,5 +65,35 @@ public class ContratLocationMetier {
             System.out.println(e.getMessage());
         }
         return contratLocation;
+    }
+    public List<Object[]> getContratLocationInfo(int idUnite, int idLocataire) {
+        List<Object[]> results = null;
+        try {
+            transaction.begin();
+            String sql = "SELECT c,u,l,b,im " +
+                    "FROM Contratsdelocations c " +
+                    "JOIN Unitesdelocations u ON c.idUnite = u.idUnite " +
+                    "JOIN Immeubles im ON u.idImmeuble = im.idImmeuble "+
+                    "JOIN Utilisateurs b ON im.idProprietaire = b.idUser " +
+                    "JOIN Utilisateurs l ON c.idLocataire=l.idUser " +
+                    "WHERE c.idUnite = :idUnite AND c.idLocataire = :idLocataire ";
+
+            Query query = entityManager.createQuery(sql, Object[].class);
+            query.setParameter("idUnite", idUnite);
+            query.setParameter("idLocataire", idLocataire);
+
+            // Get the single result of the query
+            results = query.getResultList();
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            // Rollback the transaction if it is still active
+            if (transaction.isActive())
+                transaction.rollback();
+
+            // Print the error message
+            System.out.println(e.getMessage());
+        }
+        return results;
     }
 }

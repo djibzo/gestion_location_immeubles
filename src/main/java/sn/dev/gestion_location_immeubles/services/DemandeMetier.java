@@ -47,7 +47,7 @@ public boolean verifIfUserPostuled(int idOffre, int idUser) {
         transaction.begin();
 
         // Create a query to select demandes with the given idOffre and idUser
-        String sql = "SELECT dm FROM Demandes dm WHERE dm.idOffre=:idOffre AND dm.idUser=:idUser";
+        String sql = "SELECT dm FROM Demandes dm WHERE dm.idOffre=:idOffre AND dm.idUser=:idUser AND dm.etat!="+2;
         javax.persistence.Query query = entityManager.createQuery(sql, Demandes.class);
         query.setParameter("idOffre", idOffre);
         query.setParameter("idUser", idUser);
@@ -84,7 +84,7 @@ public boolean verifIfUserPostuled(int idOffre, int idUser) {
                        " JOIN Offres ofr ON dm.idOffre = ofr.idOffre" +
                        " JOIN Unitesdelocations ul ON ofr.idUnite = ul.idUnite" +
                        " JOIN Immeubles imm ON ul.idImmeuble = imm.idImmeuble" +
-                       " WHERE dm.idUser = :idU";
+                       " WHERE dm.idUser = :idU AND dm.etat!="+2;//2 represente les demandes annulees qui ne seront pas affichees
         Query query = entityManager.createQuery(sql, Object[].class);
         query.setParameter("idU", idU);
         results = query.getResultList();
@@ -232,5 +232,35 @@ public boolean verifIfUserPostuled(int idOffre, int idUser) {
         }
 
         return idUser;
+    }
+    public void annulerDemande(int idDemande) {
+        try {
+            transaction.begin();
+            // Find the demande with the given idDemande
+            Demandes demande = entityManager.find(Demandes.class, idDemande);
+
+            // Check if the demande exists
+            if (demande != null) {
+                // Update the etat of the demande
+                demande.setEtat(2); // Set the etat to 2
+
+                // Persist the changes
+                entityManager.persist(demande);
+
+                // Commit the transaction
+                transaction.commit();
+                System.out.println("Demande cancelled by user successfully");
+            } else {
+                System.out.println("Demande not found");
+            }
+        } catch (Exception e) {
+            // Rollback the transaction if it is still active
+            if (transaction.isActive())
+                transaction.rollback();
+
+            // Print the error message
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

@@ -230,13 +230,11 @@
                 %>
             </td>
                 <td>
-                    <form method="post" action="demande">
                         <input hidden="hidden" name="idOffre" value="<%= offre.getIdOffre() %>">
                         <% if (etat==0 || etat==-1){%>
-                        <button type="submit"  class="btn btn-sm btn-danger <%= (profil==7||etat!=0)?"btn disabled":"" %> " >Annuler la demande</button>
+                        <a href="cancel.op?action=cancel&idDemandeII=<%= demande.getIdDemande() %>"  type="submit"  class="btn btn-sm btn-danger <%= (profil==7||etat!=0)?"btn disabled":"" %> " >Annuler la demande</a>
                         <% } %>
-                        <button type="submit" <%= demande.getEtat()==1?"":"hidden" %>  class="btn btn-sm btn-info" >Imprimer contrat</button>
-                    </form>
+                        <a href="imprime.im?idUnite=<%= unite.getIdUnite() %>&idLocataire=<%= (Integer) session.getAttribute("idProprio") %>" type="submit" <%= demande.getEtat()==1?"":"hidden" %>  class="btn btn-sm btn-info" >Imprimer contrat</a>
                 </td>
             </tr>
             <%

@@ -45,6 +45,10 @@ public class DemandeServlet extends HttpServlet {
         } else if (action!=null  && action.equals("rejeter") ) {
             metier.rejectDemande(idDemande);
             req.getRequestDispatcher("WEB-INF/jsp/demandes/demandePostulesforPro.jsp").forward(req, resp);
+        } else if (action!=null && action.equals("cancel")) {
+            int idDemandeII=Integer.parseInt(req.getParameter("idDemandeII"));
+            metier.annulerDemande(idDemandeII);
+            req.getRequestDispatcher("WEB-INF/jsp/demandes/list.jsp").forward(req, resp);
         }
         req.getRequestDispatcher("WEB-INF/jsp/demandes/list.jsp").forward(req, resp);
     }
