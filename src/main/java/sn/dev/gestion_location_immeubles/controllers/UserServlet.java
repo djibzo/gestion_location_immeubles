@@ -23,10 +23,13 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        int idUser = Integer.parseInt(req.getParameter("idUser"));
+        int idUser = 0;
+        if (req.getParameter("idUser")!=null){
+            idUser = Integer.parseInt(req.getParameter("idUser"));
+        }
         Utilisateurs user= metier.getUserById(idUser);
         if (action!=null && action.equals("add")){
-            req.getRequestDispatcher("WEB-INF/jsp/user/ajout.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/jsp/users/ajout.jsp").forward(req, resp);
         }
         req.setAttribute("user",user);
         req.getRequestDispatcher("WEB-INF/jsp/users/user.jsp").forward(req, resp);
@@ -39,11 +42,9 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
         EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("default");
         EntityManager entityManager = managerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-        if (action==null) {
             int idUser = Integer.parseInt(req.getParameter("idUser"));
 
             // Retrieve the updated user information from the request parameters
@@ -54,7 +55,6 @@ public class UserServlet extends HttpServlet {
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String hashedPassword = passwordEncoder.encode(mdpUser);
-
             //Utilisateurs user = metier.getUserById(idUser);
             try {
                 transaction.begin();
@@ -73,8 +73,5 @@ public class UserServlet extends HttpServlet {
                 e.printStackTrace();
                 System.out.println(e.getMessage());
             }
-        } else if (action!=null && action.equals("add")) {
-
-        }
     }
 }

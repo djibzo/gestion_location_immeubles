@@ -64,25 +64,25 @@
             Ajout utilisateur
         </div>
         <div class="card-body">
-            <form action="uniteloc" method="post">
+            <form action="ajout.su?action=add" method="post">
                 <div class="form-group">
                     <label class="control-label">Nom </label>
-                    <input type="text" class="form-control" name="nomUnite" value="">
+                    <input type="text" class="form-control" name="nom" value="">
                 </div>
                 <br>
                 <div class="form-group">
-                    <label class="control-label">Nombre de pièces </label>
-                    <input type="text" class="form-control" name="nbrePieces" value="">
+                    <label class="control-label">Prenom </label>
+                    <input type="text" class="form-control" name="prenom" value="">
                 </div>
                 <br>
                 <div class="form-group">
-                    <label class="control-label">Superficie </label>
-                    <input type="text" class="form-control" name="superficie" value="">
+                    <label class="control-label">Email </label>
+                    <input type="email" class="form-control" name="email" value="">
                 </div>
                 <br>
                 <div class="form-group">
-                    <label class="control-label">Prix Loyer </label>
-                    <input type="text" class="form-control" name="prixLoyer" value="">
+                    <label class="control-label">Mot de passe</label>
+                    <input type="text" class="form-control" name="mdp" value="">
                 </div>
                 <br>
                 <div>
